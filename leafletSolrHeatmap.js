@@ -311,12 +311,13 @@ L.SolrHeatmap = L.GeoJSON.extend({
     var scale = _this.options.colors;
 
     _this.eachLayer(function(layer) {
-      var color;
-      $.each(classifications, function(i, val) {
-        if (layer.feature.properties.count >= val) {
-          color = scale[i];
-        }
-      });
+	  var color, count = layer.feature.properties.count;
+	  for( var i=0, iEnd=scale.length;i<iEnd;i++) {
+	    if( count >= classifications[i] && count <= classifications[i+1] ) { // The first section is always one wider than the rest
+	      color = scale[i];
+	      break;
+	    }
+	  }
       layer.setStyle({
         fillColor: color,
         fillOpacity: 0.5,
