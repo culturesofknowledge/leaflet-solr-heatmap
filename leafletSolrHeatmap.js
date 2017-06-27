@@ -14,7 +14,10 @@ L.SolrHeatmap = L.GeoJSON.extend({
 		popupHighlight: false,
 		fixedOpacity: false,
 		showGlobalResults: false,
-		filterQuery: false
+		filterQuery: false,
+
+		limitFields: '',
+		maxDocs: 100
 	},
 
 	initialize: function(url, options) {
@@ -43,7 +46,7 @@ L.SolrHeatmap = L.GeoJSON.extend({
 				if (_this.options.popupDisplay.indexOf(",") > -1)
 				// easier for angular to pass in string
 					_this.options.popupDisplay = _this.options.popupDisplay.split(',');
-			_this.heatmapLayerListener =  _this._map.on('click', function(e) {
+				_this.heatmapLayerListener =  _this._map.on('click', function(e) {
 				_this.timeOfLastClick = Date.now();
 				globalSolrStart = 0;
 				_this._getNearbyData(e.latlng);
@@ -685,9 +688,11 @@ L.SolrHeatmap = L.GeoJSON.extend({
 			data: {
 				q: q,
 				wt: 'json',
-				rows: 20,
+				rows: _this.options.maxDocs,
+				fl: _this.options.limitFields,
 				start: startCount,
 				facet: true,
+
 				'facet.heatmap': _this.options.field,
 				'facet.heatmap.geom': _this._mapViewToWkt(),
 				fq: _this.options.field + _this._mapViewToEnvelope()

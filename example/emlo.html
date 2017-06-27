@@ -1,0 +1,46 @@
+<html>
+<head>
+	<link rel="stylesheet" href="../bower_components/leaflet/dist/leaflet.css" />
+	<link rel="stylesheet" href="../bower_components/leaflet.markerclusterer/dist/MarkerCluster.Default.css" />
+	<link rel='stylesheet' href='style.css' />
+	<script src="../bower_components/leaflet/dist/leaflet.js"></script>
+	<script src="../bower_components/leaflet.markerclusterer/dist/leaflet.markercluster.js"></script>
+	<script src="../bower_components/jquery/dist/jquery.min.js"></script>
+	<script src='../bower_components/geostats/lib/geostats.js'></script>
+	<script src='../bower_components/heat/simpleheat.js'></script>
+	<script src='../bower_components/heat/HeatLayer.js'></script>
+	<title>SolrSpatialExplorer</title>
+</head>
+<body>
+<div id='solrInfo'>
+	<h2>Solr Spatial Explorer</h2>
+	<div style="margin-left: 50px">
+		Solr URL: <input type='text' id='solrUrl' size='35' value='http://127.0.0.1/solr/locations'/>
+		<br/>
+		Render Style: <select id='renderType'>
+			<option selected='selected'>geojsonGrid</option>
+			<option>clusters</option>
+			<option>heatmap</option>
+		</select>
+		<br/>
+		Color Map: <input type='text'id='colorMap' size='50' value="#31eef6, #57b5d8, #df65b0, #dd1c77, #980043"/>
+		<br/>
+		RPT Field: <input type='text' id='rptField' value='geo_rpt'/>
+
+		<br/>
+		<br/>
+		<button onclick='resetSolr()'>Update</button>&nbsp&nbsp&nbsp&nbsp&nbsp    <a href='https://github.com/spacemansteve/leaflet-solr-heatmap/wiki/Configuration-Documentation'>Documentation For Fields</a>
+
+		<div style='text-align: center' id='errorMessage'></div>
+		<br/>
+	</div>
+</div>
+<div id='map'></div><select id="metable" size="10"></select>
+<div id='responseTime'></div>
+<div id='numDocs'></div>
+<div id='renderTime'></div>
+<br/>
+<script src='../leafletSolrHeatmap.js'></script>
+<script src='emlo.js'></script>
+</body>
+</html>
