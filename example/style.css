@@ -1,6 +1,13 @@
 #map {
+  display:inline-block;
   height: 600px;
-  width: 1000px;
+  width: 800px;
+}
+
+#metable {
+  display:inline-block;
+  width: 500px;
+  height: 600px;
 }
 
 .leaflet-popup-content { max-height : 250px; overflow : auto; }
