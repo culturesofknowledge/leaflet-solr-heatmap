@@ -70,12 +70,22 @@ function resetSolr()
 
 	var solrSuccessHandler = function(data, textStatus, jqXHR)
 	{
-		var places = [];
+		var placeData = [], placeNames = [];
 		for( var i=0, iEnd=data.response.docs.length; i<iEnd; i++) {
-			places.push( "<option>" + data.response.docs[i]["geonames_name"] + "</option>" );
+			placeData.push( data.response.docs[i] );
+			data.response.docs[i].reverseName = data.response.docs[i].geonames_name.split(',').reverse().join(",");
 		}
 
-		jQuery('#metable').html( places.join(""));
+		//var nameSort = function(r,l) { return r.geonames_name.localeCompare(l.geonames_name); };
+		var reverseNameSort = function(r,l) { return r.reverseName.localeCompare(l.reverseName); };
+
+		placeData.sort( reverseNameSort );
+
+		for( i=0, iEnd=placeData.length; i<iEnd; i++) {
+			placeNames.push( "<option>" + placeData[i].reverseName + "  [" + placeData[i].geo + "]</option>" );
+		}
+
+		jQuery('#metable').html( placeNames.join(""));
 		jQuery('#errorMessage').text('');
 		jQuery('#responseTime').html('Solr response time: ' + solr.solrTime + ' ms');
 		jQuery('#numDocs').html('Number of docs: ' + solr.docsCount.toLocaleString());
