@@ -676,12 +676,14 @@ L.SolrHeatmap = L.GeoJSON.extend({
 			startCount = 0;
 		}
 		var bounds = _this._map.getBounds();
-		var q = "*:*";
+		var q = "*:*";//"geonames_name:Mexico";
+
 		if (_this.options.nearbyField && (_this.options.nearbyFieldType === 'BBox')) {
 			// score layers using bbox field
 			q = '{!field f=' + _this.options.nearbyField + ' score=overlapRatio}Intersects(ENVELOPE(' +
 				bounds.getWest() + ',' + bounds.getEast() + ',' + bounds.getNorth() + ',' + bounds.getSouth() + '))';
 		}
+
 		$.ajax({
 			url: _this._solrUrl + _this._solrQuery(),
 			dataType: 'JSONP',
@@ -689,7 +691,7 @@ L.SolrHeatmap = L.GeoJSON.extend({
 				q: q,
 				wt: 'json',
 				rows: _this.options.maxDocs,
-				fl: _this.options.limitFields,
+				fl: _this.options.limitFields.join(","),
 				start: startCount,
 				facet: true,
 

@@ -4,4 +4,10 @@
   width: 800px;
 }
 
+#placelist {
+  display:inline-block;
+  width: 500px;
+  height: 600px;
+}
+
 .leaflet-popup-content { max-height : 250px; overflow : auto; }

@@ -6,7 +6,8 @@ var layer = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.
 
 function onEachFeature(feature, layer) {
 	var count = feature.properties.count.toLocaleString();
-	layer.bindPopup(count);
+	layer.bindTooltip(count + " places").openTooltip();
+	//layer.bindPopup(count);
 }
 
 function setKeyword()
@@ -23,6 +24,8 @@ function setKeyword()
 
 function resetSolr()
 {
+	"strict mode";
+
 	var solrUrl = jQuery('#solrUrl').val();
 	var renderType = jQuery("#renderType option:selected" ).text();
 	var rptField = jQuery('#rptField').val();
@@ -32,6 +35,8 @@ function resetSolr()
 	var popupDisplayField = '';
 	var sortField = '';
 	var showGlobalResults = false;
+
+	var placesData = [];
 
 	if (popupDisplayField.indexOf(',') > -1)
 		popupDisplayField = popupDisplayField.split(',');
@@ -70,22 +75,23 @@ function resetSolr()
 
 	var solrSuccessHandler = function(data, textStatus, jqXHR)
 	{
-		var placeData = [], placeNames = [];
+		var placeNames = [];
+		placesData = [];
 		for( var i=0, iEnd=data.response.docs.length; i<iEnd; i++) {
-			placeData.push( data.response.docs[i] );
-			data.response.docs[i].reverseName = data.response.docs[i].geonames_name.split(',').reverse().join(",");
+			placesData.push( data.response.docs[i] );
+			data.response.docs[i].reverseName = data.response.docs[i]["n"].split(',').reverse().join(",");
 		}
 
 		//var nameSort = function(r,l) { return r.geonames_name.localeCompare(l.geonames_name); };
 		var reverseNameSort = function(r,l) { return r.reverseName.localeCompare(l.reverseName); };
 
-		placeData.sort( reverseNameSort );
+		placesData.sort( reverseNameSort );
 
-		for( i=0, iEnd=placeData.length; i<iEnd; i++) {
-			placeNames.push( "<option>" + placeData[i].reverseName + "  [" + placeData[i].geo + "]</option>" );
+		for( i=0, iEnd=placesData.length; i<iEnd; i++) {
+			placeNames.push( "<option value='" + i + "'>" + placesData[i].reverseName + "  [" + placesData[i]["g"] + "]</option>" );
 		}
 
-		jQuery('#metable').html( placeNames.join(""));
+		jQuery('#placelist').html( placeNames.join(""));
 		jQuery('#errorMessage').text('');
 		jQuery('#responseTime').html('Solr response time: ' + solr.solrTime + ' ms');
 		jQuery('#numDocs').html('Number of docs: ' + solr.docsCount.toLocaleString());
@@ -124,12 +130,59 @@ function resetSolr()
 		fixedOpacity: 100,
 		filterQuery: keyword,
 		// Inherited from L.GeoJSON
-		onEachFeature: onEachFeature,
+		// onEachFeature: onEachFeature,
 		//
-		limitFields: 'geo,geonames_name,id',
+		limitFields: [
+			'g:geo',
+			'n:geonames_name',
+			'i:id',
+			'f:ox_totalWorksSentFromPlace',
+			't:ox_totalWorksSentToPlace',
+			'm:ox_totalWorksMentioningPlace'
+		],
 		maxDocs: 10000
 	});
 	solr.addTo(map);
+
+	var markerHighlight = null;
+	jQuery('#placelist').on("change",function () {
+		var index = jQuery('#placelist').val();
+		var placeData = placesData[+index];
+
+		var latlong = placeData.geo.split(",");
+		if( markerHighlight === null ) {
+			markerHighlight = L.popup({
+				autoPan: false
+			})
+			.setLatLng([+latlong[0], +latlong[1]])
+			.openOn(map);
+		}
+
+		var title = placeData["n"].split(",").slice(0,-1).join(", ");
+		if( title.trim() === "" ) {
+			title = placeData["n"];
+		}
+		var url = "http://emlo.bodleian.ox.ac.uk/profile/location/" + placeData["n"].replace("uuid_","");
+
+		var content = "" +
+			"<b>" + title + "</b><br/>" +
+			((placeData["f"] !== 0)
+				? "Sent from count: " + placeData["f"] + "<br/>"
+				: "") +
+			((placeData["t"] !== 0)
+				? "Sent to count: " + placeData["t"] + "<br/>"
+				: "") +
+			((placeData["m"] !== 0)
+				? "Mentioned count: " + placeData["m"] + "<br/>"
+				: "")  +
+			'<a href="' + url + '" target="_blank">Link to main record</a>';
+
+		markerHighlight
+			.setLatLng([+latlong[0], +latlong[1]])
+			.setContent(content);
+
+		console.log(content, placeData);
+	});
 
 }
 

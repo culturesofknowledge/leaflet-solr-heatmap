@@ -1,21 +1,21 @@
 <html>
 <head>
-	<link rel="stylesheet" href="../bower_components/leaflet/dist/leaflet.css" />
-	<link rel="stylesheet" href="../bower_components/leaflet.markerclusterer/dist/MarkerCluster.Default.css" />
+	<link rel="stylesheet" href="../../bower_components/leaflet/dist/leaflet.css" />
+	<link rel="stylesheet" href="../../bower_components/leaflet.markerclusterer/dist/MarkerCluster.Default.css" />
 	<link rel='stylesheet' href='style.css' />
-	<script src="../bower_components/leaflet/dist/leaflet.js"></script>
-	<script src="../bower_components/leaflet.markerclusterer/dist/leaflet.markercluster.js"></script>
-	<script src="../bower_components/jquery/dist/jquery.min.js"></script>
-	<script src='../bower_components/geostats/lib/geostats.js'></script>
-	<script src='../bower_components/heat/simpleheat.js'></script>
-	<script src='../bower_components/heat/HeatLayer.js'></script>
+	<script src="../../bower_components/leaflet/dist/leaflet.js"></script>
+	<script src="../../bower_components/leaflet.markerclusterer/dist/leaflet.markercluster.js"></script>
+	<script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+	<script src='../../bower_components/geostats/lib/geostats.js'></script>
+	<script src='../../bower_components/heat/simpleheat.js'></script>
+	<script src='../../bower_components/heat/HeatLayer.js'></script>
 	<title>SolrSpatialExplorer</title>
 </head>
 <body>
 <div id='solrInfo'>
 	<h2>Solr Spatial Explorer</h2>
 	<div style="margin-left: 50px">
-		Solr URL: <input type='text' id='solrUrl' size='35' value='http://127.0.0.1/solr/locations'/>
+		Solr URL: <input type='text' id='solrUrl' size='35' value='http://127.0.0.1:8983/solr/locations'/>
 		<br/>
 		Render Style: <select id='renderType'>
 			<option selected='selected'>geojsonGrid</option>
@@ -35,12 +35,15 @@
 		<br/>
 	</div>
 </div>
-<div id='map'></div><select id="metable" size="2"></select>
+
+<div id='map'></div><select title="Places" id="placelist" size="2"></select>
+
 <div id='responseTime'></div>
 <div id='numDocs'></div>
 <div id='renderTime'></div>
 <br/>
-<script src='../leafletSolrHeatmap.js'></script>
+<script src="Leaflet.Marker.SlideTo.js"></script>
+<script src='../../leafletSolrHeatmap.js'></script>
 <script src='emlo.js'></script>
 </body>
 </html>
