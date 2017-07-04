@@ -697,7 +697,8 @@ L.SolrHeatmap = L.GeoJSON.extend({
 
 				'facet.heatmap': _this.options.field,
 				'facet.heatmap.geom': _this._mapViewToWkt(),
-				fq: _this.options.field + _this._mapViewToEnvelope()
+				fq: _this.options.field + _this._mapViewToEnvelope(),
+				omitHeader:true
 			},
 			jsonp: 'json.wrf',
 			success: function(data, textStatus, jqXHR) {
