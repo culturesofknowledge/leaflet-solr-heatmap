@@ -122,47 +122,48 @@ L.SolrHeatmap = L.GeoJSON.extend({
 	},
 
 	_createGeojson: function() {
-		var _this = this;
-		var geojson = {};
+		var _this = this,
+			geojson = {}, classifications;
 
 		geojson.type = 'FeatureCollection';
 		geojson.features = [];
 
-		$.each(_this.facetHeatmap.counts_ints2D, function(row, value) {
-			if (value === null) {
-				return;
-			}
-
-			$.each(value, function(column, val) {
-				if (val === 0) {
+		if( _this.facetHeatmap.counts_ints2D ) {
+			$.each(_this.facetHeatmap.counts_ints2D, function (row, value) {
+				if (value === null) {
 					return;
 				}
 
-				var newFeature = {
-					type: 'Feature',
-					geometry: {
-						type: 'Polygon',
-						coordinates: [
-							[
-								[_this._minLng(column), _this._minLat(row)],
-								[_this._minLng(column), _this._maxLat(row)],
-								[_this._maxLng(column), _this._maxLat(row)],
-								[_this._maxLng(column), _this._minLat(row)],
-								[_this._minLng(column), _this._minLat(row)]
-							]
-						]
-					},
-					properties: {
-						count: val
+				$.each(value, function (column, val) {
+					if (val === 0) {
+						return;
 					}
-				};
-				geojson.features.push(newFeature);
+
+					var newFeature = {
+						type: 'Feature',
+						geometry: {
+							type: 'Polygon',
+							coordinates: [
+								[
+									[_this._minLng(column), _this._minLat(row)],
+									[_this._minLng(column), _this._maxLat(row)],
+									[_this._maxLng(column), _this._maxLat(row)],
+									[_this._maxLng(column), _this._minLat(row)],
+									[_this._minLng(column), _this._minLat(row)]
+								]
+							]
+						},
+						properties: {
+							count: val
+						}
+					};
+					geojson.features.push(newFeature);
+				});
 			});
-		});
+		}
 
 		_this.addData(geojson);
-		var colors = _this.options.colors;
-		var classifications = _this._getClassifications(colors.length);
+		classifications = _this._getClassifications(_this.options.colors.length);
 		_this._styleByCount(classifications);
 		_this._setRenderTime();
 	},
