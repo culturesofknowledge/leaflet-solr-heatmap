@@ -15,18 +15,7 @@
 <div id='solrInfo'>
 	<h2>Solr Spatial Explorer</h2>
 	<div style="margin-left: 50px">
-		Solr URL: <input type='text' id='solrUrl' size='35' value='http://127.0.0.1:8983/solr/locations'/>
-		<br/>
-		Render Style: <select id='renderType'>
-			<option selected='selected'>geojsonGrid</option>
-			<option>clusters</option>
-			<option>heatmap</option>
-		</select>
-		<br/>
 		Color Map: <input type='text'id='colorMap' size='50' value="#31eef6, #57b5d8, #df65b0, #dd1c77, #980043"/>
-		<br/>
-		RPT Field: <input type='text' id='rptField' value='geo_rpt'/>
-
 		<br/>
 		<br/>
 		<button onclick='resetSolr()'>Update</button>&nbsp&nbsp&nbsp&nbsp&nbsp    <a href='https://github.com/spacemansteve/leaflet-solr-heatmap/wiki/Configuration-Documentation'>Documentation For Fields</a>
@@ -41,9 +30,11 @@
 <div id='responseTime'></div>
 <div id='numDocs'></div>
 <div id='renderTime'></div>
-<br/>
-<script src="Leaflet.Marker.SlideTo.js"></script>
-<script src='../../leafletSolrHeatmap.js'></script>
-<script src='emlo.js'></script>
 </body>
+<foot style="display:none">
+	<script src="https://api.tiles.mapbox.com/mapbox.js/v2.1.2/mapbox.js"></script>
+	<script src="Leaflet.Marker.SlideTo.js"></script>
+	<script src='../../leafletSolrHeatmap.js'></script>
+	<script src='emlo.js'></script>
+</foot>
 </html>
