@@ -149,7 +149,7 @@ function resetSolr()
 		var index = jQuery('#placelist').val();
 		var placeData = placesData[+index];
 
-		var latlong = placeData.geo.split(",");
+		var latlong = placeData["g"].split(",");
 		if( markerHighlight === null ) {
 			markerHighlight = L.popup({
 				autoPan: false
@@ -167,13 +167,13 @@ function resetSolr()
 		var content = "" +
 			"<b>" + title + "</b><br/>" +
 			((placeData["f"] !== 0)
-				? "Sent from count: " + placeData["f"] + "<br/>"
+				? "Sent from: " + placeData["f"] + " letters<br/>"
 				: "") +
 			((placeData["t"] !== 0)
-				? "Sent to count: " + placeData["t"] + "<br/>"
+				? "Sent to: " + placeData["t"] + " letters<br/>"
 				: "") +
 			((placeData["m"] !== 0)
-				? "Mentioned count: " + placeData["m"] + "<br/>"
+				? "Mentioned: " + placeData["m"] + " letters<br/>"
 				: "")  +
 			'<a href="' + url + '" target="_blank">Link to main record</a>';
 
@@ -181,7 +181,6 @@ function resetSolr()
 			.setLatLng([+latlong[0], +latlong[1]])
 			.setContent(content);
 
-		console.log(content, placeData);
 	});
 
 }
