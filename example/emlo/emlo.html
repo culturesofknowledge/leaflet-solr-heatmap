@@ -15,17 +15,22 @@
 <div id='solrInfo'>
 	<h2>Solr Spatial Explorer</h2>
 	<div style="margin-left: 50px">
-		Color Map: <input type='text'id='colorMap' size='50' value="#31eef6, #57b5d8, #df65b0, #dd1c77, #980043"/>
+		Color Map: <input type='text' id='colorMap' size='50' value="#31eef6, #57b5d8, #df65b0, #dd1c77, #980043"/>
 		<br/>
-		<br/>
-		<button onclick='resetSolr()'>Update</button>&nbsp&nbsp&nbsp&nbsp&nbsp    <a href='https://github.com/spacemansteve/leaflet-solr-heatmap/wiki/Configuration-Documentation'>Documentation For Fields</a>
+		<button id="update">Update</button>&nbsp;&nbsp;&nbsp;&nbsp;<a href='https://github.com/spacemansteve/leaflet-solr-heatmap/wiki/Configuration-Documentation'>Documentation For Fields</a>
 
 		<div style='text-align: center' id='errorMessage'></div>
 		<br/>
 	</div>
 </div>
 
-<div id='map'></div><select title="Places" id="placelist" size="2"></select>
+
+
+<div id="map"></div>
+<div id="list">
+	Filter list: <input type='text' id='filter' size='50' value=""/><button id="clear">Clear</button><br/>
+	<select title="Places" id="placelist" size="2"></select>
+</div>
 
 <div id='responseTime'></div>
 <div id='numDocs'></div>
@@ -33,7 +38,6 @@
 </body>
 <foot style="display:none">
 	<script src="https://api.tiles.mapbox.com/mapbox.js/v2.1.2/mapbox.js"></script>
-	<script src="Leaflet.Marker.SlideTo.js"></script>
 	<script src='../../leafletSolrHeatmap.js'></script>
 	<script src='emlo.js'></script>
 </foot>

@@ -17,7 +17,8 @@ L.SolrHeatmap = L.GeoJSON.extend({
 		filterQuery: false,
 
 		limitFields: '',
-		maxDocs: 100
+		maxDocs: 100,
+		solrQueryCreate: null
 	},
 
 	initialize: function(url, options) {
@@ -677,9 +678,12 @@ L.SolrHeatmap = L.GeoJSON.extend({
 			startCount = 0;
 		}
 		var bounds = _this._map.getBounds();
-		var q = "*:*";//"geonames_name:Mexico";
+		var q = "*:*";
 
-		if (_this.options.nearbyField && (_this.options.nearbyFieldType === 'BBox')) {
+		if( _this.options.solrQueryCreate ){
+			q = _this.options.solrQueryCreate();
+		}
+		else if (_this.options.nearbyField && (_this.options.nearbyFieldType === 'BBox')) {
 			// score layers using bbox field
 			q = '{!field f=' + _this.options.nearbyField + ' score=overlapRatio}Intersects(ENVELOPE(' +
 				bounds.getWest() + ',' + bounds.getEast() + ',' + bounds.getNorth() + ',' + bounds.getSouth() + '))';
